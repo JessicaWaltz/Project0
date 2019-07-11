@@ -1,4 +1,4 @@
-//import Role from "./Role";
+import Role from "./Role";
 export default class User{
   userId: number; // primary key
   username: string; // not null, unique
