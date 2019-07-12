@@ -6,5 +6,17 @@ export default class User{
   firstName: string; // not null
   lastName: string; // not null
   email: string; // not null
-  //role: Role; // not null
+  role: Number; // not null
+  constructor(obj){
+    if(!obj){
+      return;
+    }
+    this.userId = obj.id;
+    this.username = obj.username;
+    this.password = obj.password;
+    this.firstName = obj.first_name;
+    this.lastName = obj.last_name;
+    this.email = obj.email;
+    this.role = obj.roleid;
+  }
 }

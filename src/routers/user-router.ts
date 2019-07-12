@@ -2,8 +2,17 @@ import express, {Request, Response} from 'express';
 import User from '../models/User';
 import * as userService from '../service/user-service';
 const userRouter = express.Router();
+import MYSECRET from '../config/secret';
+import pool from '../server';
+//DAO Database Action Object
+//  Create Query
+//  Use Results
+//  Async/await
+//  {try-cat} 
+//npm install tslint
+
 userRouter.post('',(request: Request, response: Response) => {
-    console.log("IDK WHAT I'M DOING");
+    //console.log("IDK WHAT I'M DOING");
     const user = userService.createUser(request.body); 
     if (user){
         response.status(201).json(user);
@@ -14,11 +23,27 @@ userRouter.post('',(request: Request, response: Response) => {
 
 });
 
-userRouter.get('/:id', (request:Request, response:Response)=>{
+userRouter.get('/:id',
+    async (request:Request, response:Response)=>{
     const id = parseInt(request.params.id);
-    console.log("This guys got an ID of "+ id);
-    const user : User = userService.getUserById(id);
-    response.json(user);
+    const user: User = await userService.getUserById(id);
+    if(user.userId){
+        response.status(200).json(user);
+    }
+    else{
+        response.sendStatus(400);
+    }
+});
+userRouter.get('',
+    async (request:Request, response:Response)=>{
+    //const id = parseInt(request.params.id);
+    const user: User[] = await userService.getUsers();
+    if(user){
+        response.status(200).json(user);
+    }
+    else{
+        response.sendStatus(400);
+    }
 });
 
 

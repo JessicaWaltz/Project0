@@ -1,6 +1,7 @@
 import express,{Request,Response} from 'express';
 //looks at request if it has mine type  then convert to javascript to use later
 import userRouter from './routers/user-router';
+import loginRouter from './routers/login-router';
 import bodyParser from 'body-parser';
 
 //import catRouter from './routers/cat-router';
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 app.use('/users',userRouter);
+app.use('/login',loginRouter);
 
 //Starting a server on port 3000 accessable a localhost:3000
 app.listen(port, ()=>{
