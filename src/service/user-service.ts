@@ -24,11 +24,15 @@ export async function getUserById(id:number):Promise<User>{
     
     //return userMap.get(id);
 }
+/**
+ * Returns all users, only a  finance manager can do this
+ */
 export async function getUsers():Promise<User[]>{
     const result = await pool.query(`SELECT * FROM users`);
     let users: User[] = [];
     for (let i of result.rows){
-        users.push(i);
+        let temp:User = new User(i);
+        users.push(temp);
     }
     console.log(users);
     //const user = result.rows;
@@ -42,11 +46,14 @@ export async function getUsers():Promise<User[]>{
  * @param request 
  */
 export async function patchUsers(request):Promise<User>{
+
     const result = await pool.query(`UPDATE users 
-    SET username = $2, password = $3, first_name = $4, last_name = $5, email = $6, role = $7
+    SET username = $2, password = $3, first_name = $4, last_name = $5, email = $6, roleid = $7
     WHERE id = $1 `,[request.id,request.username,request.password,request.first_name,
-    request.last_name,request.email,request.role]);
-    const user = new User(result.rows[0]);
+    request.last_name,request.email,request.roleid]);
+    const res = await pool.query(`SELECT * FROM users WHERE id = $1`,[request.id]);
+    console.log(res);
+    const user = new User(res.rows[0]);
     return user;
 }
 

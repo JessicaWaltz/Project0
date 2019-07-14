@@ -1,10 +1,12 @@
 import express, {Request, Response} from 'express';
 import * as reimbursmentService from '../service/reimbursments-service';
+import * as permissionService from '../service/permissions-service';
 const reimbursmentsRouter = express.Router();
 import MYSECRET from '../config/secret';
 import pool from '../server';
 import Reimbursment from '../models/Reimbursment';
 import { request } from 'https';
+import {getUID} from "../login";
 /**
  * This is the call to view all reimbursements with the same status.
  * Only a finance manager(role id = 2) can do this. The call will
@@ -12,13 +14,24 @@ import { request } from 'https';
  * */
 reimbursmentsRouter.get('/status/:id',
     async (request:Request, response:Response)=>{
-        const id = parseInt(request.params.id);
-        const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByStatusId(id);
-        if(reim){
-            response.status(200).json(reim);
-        }
+        if(getUID() == 0){
+            response.status(401).json({message: "You are not logged in"});
+        } 
         else{
-            response.sendStatus(400);
+            const financeCheck:Boolean = await permissionService.checkFinance();
+            if (financeCheck){
+                const id = parseInt(request.params.id);
+                const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByStatusId(id);
+                if(reim){
+                    response.status(200).json(reim);
+                }
+                else{
+                    response.status(400).json({message: "Invalid Credentials"});
+                }
+            }
+            else{
+                response.status(401).json({message: "You are not authorized for this operation"});
+            }
         }
 });
 /**
@@ -29,12 +42,24 @@ reimbursmentsRouter.get('/status/:id',
 reimbursmentsRouter.get('/author/userId/:id',
     async (request:Request, response:Response)=>{
         const id = parseInt(request.params.id);
-        const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByAuthorId(id);
-        if(reim){
-            response.status(200).json(reim);
+        if(getUID() == 0){
+            response.status(401).json({message: "You are not logged in"});
         }
         else{
-            response.sendStatus(400);
+            const selfCheck:Boolean = await permissionService.checkSelfSearch(id); 
+            const financeCheck:Boolean = await permissionService.checkFinance();
+            if(selfCheck || financeCheck){
+                const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByAuthorId(id);
+                if(reim[0].reimbursementId){
+                    response.status(200).json(reim);
+                }
+                else{
+                    response.status(400).json({message: "Invalid Credentials"});
+                }
+            }
+            else{
+                response.status(401).json({message: "You are not authorized for this operation"});
+            }
         }
 });
 /**
@@ -43,12 +68,17 @@ reimbursmentsRouter.get('/author/userId/:id',
  */
 reimbursmentsRouter.post('',
     async (request:Request, response:Response)=>{
-        const res:Reimbursment = await reimbursmentService.postReimbursment(request.body);
-        if(res.reimbursementId){
-            response.sendStatus(201);
+        if(getUID() == 0){
+            response.status(401).json({message: "You are not logged in"});
         }
         else{
-            response.sendStatus(400);
+            const res:Reimbursment = await reimbursmentService.postReimbursment(request.body);
+            if(res.reimbursementId){
+                response.sendStatus(201);
+            }
+            else{
+                response.status(400).json({message: "Invalid Credentials"});
+            }
         }
 });
 /**

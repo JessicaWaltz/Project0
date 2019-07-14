@@ -4,7 +4,7 @@ import userRouter from './routers/user-router';
 import loginRouter from './routers/login-router';
 import reimbursmentsRouter from './routers/reimbursments-router';
 import bodyParser from 'body-parser';
-
+//let role = 0;
 //import catRouter from './routers/cat-router';
 
 
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use('/users',userRouter);
 app.use('/login',loginRouter);
-app.use('/reimbursments',reimbursmentsRouter);
+app.use('/reimbursements',reimbursmentsRouter);
 
 //Starting a server on port 3000 accessable a localhost:3000
 app.listen(port, ()=>{

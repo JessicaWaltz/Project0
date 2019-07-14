@@ -1,7 +1,8 @@
 import User from "../models/User";
 import pool from "../server";
 import { exists } from "fs";
-
+import {setUID} from "../login";
+ 
 
 export async function login(loginfo):Promise<User>{
     const result = await pool.query(
@@ -9,6 +10,7 @@ export async function login(loginfo):Promise<User>{
     (username,password) = ($1,$2);`,
     [loginfo.username,loginfo.password]);
     const user:User = new User(result.rows[0]);
+    setUID(user.userId);
     return user;
 }
 /*select exists (`SELECT * FROM users WHERE
