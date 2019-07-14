@@ -34,6 +34,21 @@ export async function getUsers():Promise<User[]>{
     //const user = result.rows;
     return users;
 }
+/**
+ * All fields of user will be passed in if not then error
+ * If success then return the user, userId: number; username: string; 
+ * password: string; firstName: string; lastName: string; 
+ * email: string; role: Number; 
+ * @param request 
+ */
+export async function patchUsers(request):Promise<User>{
+    const result = await pool.query(`UPDATE users 
+    SET username = $2, password = $3, first_name = $4, last_name = $5, email = $6, role = $7
+    WHERE id = $1 `,[request.id,request.username,request.password,request.first_name,
+    request.last_name,request.email,request.role]);
+    const user = new User(result.rows[0]);
+    return user;
+}
 
 //const con = client();
 //con.connect();
