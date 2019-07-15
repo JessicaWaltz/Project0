@@ -13,12 +13,13 @@ import {getUID} from "../login";
  * return a list of all reimbursements with that status.
  * */
 reimbursmentsRouter.get('/status/:id',
-    async (request:Request, response:Response)=>{
-        if(getUID() == 0){
+    async (request:any, response:Response)=>{
+        const uID = request.session.uid;
+        if(!uID){
             response.status(401).json({message: "You are not logged in"});
         } 
         else{
-            const financeCheck:Boolean = await permissionService.checkFinance();
+            const financeCheck:Boolean = await permissionService.checkFinance(uID);
             if (financeCheck){
                 const id = parseInt(request.params.id);
                 const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByStatusId(id);
@@ -40,14 +41,15 @@ reimbursmentsRouter.get('/status/:id',
  * Should be a list of all reimbursements the author made.
  */
 reimbursmentsRouter.get('/author/userId/:id',
-    async (request:Request, response:Response)=>{
+    async (request:any, response:Response)=>{
         const id = parseInt(request.params.id);
-        if(getUID() == 0){
+        const uID = request.session.uid;
+        if(!uID){
             response.status(401).json({message: "You are not logged in"});
         }
         else{
-            const selfCheck:Boolean = await permissionService.checkSelfSearch(id); 
-            const financeCheck:Boolean = await permissionService.checkFinance();
+            const selfCheck:Boolean = await permissionService.checkSelfSearch(uID,id); 
+            const financeCheck:Boolean = await permissionService.checkFinance(uID);
             if(selfCheck || financeCheck){
                 const reim: Reimbursment[] = await reimbursmentService.getReimbursmentsByAuthorId(id);
                 if(reim[0].reimbursementId){
@@ -67,8 +69,9 @@ reimbursmentsRouter.get('/author/userId/:id',
  * Return status code of 201 if a success
  */
 reimbursmentsRouter.post('',
-    async (request:Request, response:Response)=>{
-        if(getUID() == 0){
+    async (request:any, response:Response)=>{
+        const uID = request.session.uid;
+        if(!uID){
             response.status(401).json({message: "You are not logged in"});
         }
         else{

@@ -14,31 +14,23 @@ import pool from '../server';
 //  {try-cat} 
 //npm install tslint
 
-/*userRouter.post('',(request: Request, response: Response) => {
-    const user = userService.createUser(request.body); 
-    if (user){
-        response.status(201).json(user);
-    }
-    else{
-        response.sendStatus(500);
-    }
 
-});*/
 /**
  * Only finance manager or if the logged in user is the one being searched
  * 
  */
 userRouter.get('/:id',
-    async (request:Request, response:Response)=>{
-    const id = parseInt(request.params.id);
-    if(getUID() == 0){
+    async (request:any, response:Response)=>{
+    const getID = parseInt(request.params.id);
+    const uID = request.session.uid;
+    if(!uID){
         response.status(401).json({message: "You are not logged in"});
     }
     else{
-        const selfCheck:Boolean = await permissionService.checkSelfSearch(id); 
-        const financeCheck:Boolean = await permissionService.checkFinance();
+        const selfCheck:Boolean = await permissionService.checkSelfSearch(uID,getID); 
+        const financeCheck:Boolean = await permissionService.checkFinance(uID);
         if(selfCheck || financeCheck){
-            const user: User = await userService.getUserById(id);
+            const user: User = await userService.getUserById(getID);
             if(user.userId){
                 response.status(200).json(user);
             }
@@ -55,16 +47,15 @@ userRouter.get('/:id',
  * shows all users, only finance managers can do this
  */
 userRouter.get('',
-    async (request:Request, response:Response)=>{
-    //console.log("Attempting to get all users");
-    if(getUID() == 0){
+    async (request:any, response:Response)=>{
+    const uID = request.session.uid;
+    if(!uID){
         response.status(401).json({message: "You are not logged in"});
     }
     else{
-        const checkPer:Boolean = await permissionService.checkFinance();
+        const checkPer:Boolean = await permissionService.checkFinance(request.session.uid);
         if(checkPer){
             const user: User[] = await userService.getUsers();
-            //console.log(user[0]);
             if(user[0].userId){
                 response.status(200).json(user);
             }
@@ -81,12 +72,13 @@ userRouter.get('',
  * Only an Admin can do this
  */
 userRouter.patch('',
-    async(request:Request,response:Response)=>{
-        if(getUID() == 0){
+    async(request:any,response:Response)=>{
+        const uID = request.session.uid;
+        if(!uID){
             response.status(401).json({message: "You are not logged in"});
         }
         else{
-            const checkPer:Boolean = await permissionService.checkAdmin();
+            const checkPer:Boolean = await permissionService.checkAdmin(uID);
             if(checkPer){
                 const user: User = await userService.patchUsers(request.body);
                 console.log(user);

@@ -3,29 +3,35 @@ import User from "../models/User";
 import pool from "../server";
 import {getUID} from "../login";
 
-export async function checkAdmin(){
-    const uID = getUID();
+/**
+ * This function checks if the user has the role of admin
+ * @param uID is the user who is currently logged in
+ */
+export async function checkAdmin(uID){
     const res = await pool.query(`SELECT roleid FROM users WHERE id = $1`,[uID]);
     if(res.rows[0].roleid == 1){
         return true;
     } 
     return false;
 }
-export async function checkFinance(){
-    const uID = getUID();
-    console.log(uID);
+/**
+ * This function checks if the logged in user has the role of a finance manager
+ * @param uID is the user who is currently logged in
+ */
+export async function checkFinance(uID){
     const res = await pool.query(`SELECT roleid FROM users WHERE id = $1`,[uID]);
-    console.log(res);
-    console.log(res.fields);
     if(res.rows[0].roleid == 2){
-        //console.log("I am definitely a finance manager\n\n\n\n\n\n");
         return true;
     } 
     return false;
 }
-export async function checkSelfSearch(id){
-    const uID = getUID();
-    if(id == uID){
+/**
+ * This function will return true if the user is trying to search themself
+ * @param uID is the user who is currently logged in
+ * @param searchID is the user that they want to search
+ */
+export async function checkSelfSearch(uID,searchID){
+    if(searchID == uID){
         return true;
     }
     return false;
