@@ -17,6 +17,6 @@ export default class User{
     this.firstName = obj.first_name;
     this.lastName = obj.last_name;
     this.email = obj.email;
-    this.role = obj.roleid;
+    this.role = obj.role_id;
   }
 }

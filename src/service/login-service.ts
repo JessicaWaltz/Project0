@@ -9,10 +9,55 @@ export async function login(loginfo):Promise<User>{
     `SELECT * FROM users WHERE
     (username,password) = ($1,$2);`,
     [loginfo.username,loginfo.password]);
-    const user:User = new User(result.rows[0]);
-    setUID(user.userId);
-    return user;
+    try{
+        const user:User = new User(result.rows[0]);
+        return user;
+    }
+    catch(err){
+        throw err;
+    }
 }
+
+
+//401 is a not authenticated 
+//Authorisation 403
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*select exists (`SELECT * FROM users WHERE
     (username,password) = ($1,$2) `,
     [loginfo.username,loginfo.password]))

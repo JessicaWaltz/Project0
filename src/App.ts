@@ -3,7 +3,7 @@ import express,{Request,Response} from 'express';
 import session from 'express-session';
 import userRouter from './routers/user-router';
 import loginRouter from './routers/login-router';
-import reimbursmentsRouter from './routers/reimbursments-router';
+import reimbursementsRouter from './routers/reimbursements-router';
 import bodyParser from 'body-parser';
 //let role = 0;
 //import catRouter from './routers/cat-router';
@@ -18,7 +18,9 @@ import bodyParser from 'body-parser';
 const app = express();
 //assigning the port number where the server will run
 const port = 3000;
+
 app.use(bodyParser.urlencoded({extended : true}));
+//lets you add a body in post man
 app.use(bodyParser.json());
 
 app.use(session({
@@ -29,7 +31,7 @@ app.use(session({
 
 app.use('/users',userRouter);
 app.use('/login',loginRouter);
-app.use('/reimbursements',reimbursmentsRouter);
+app.use('/reimbursements',reimbursementsRouter);
 
 
 //Starting a server on port 3000 accessable a localhost:3000

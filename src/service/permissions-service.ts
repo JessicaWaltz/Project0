@@ -1,4 +1,4 @@
-import Reimbursment from "../models/Reimbursment";
+import Reimbursement from "../models/Reimbursement";
 import User from "../models/User";
 import pool from "../server";
 import {getUID} from "../login";
@@ -8,8 +8,8 @@ import {getUID} from "../login";
  * @param uID is the user who is currently logged in
  */
 export async function checkAdmin(uID){
-    const res = await pool.query(`SELECT roleid FROM users WHERE id = $1`,[uID]);
-    if(res.rows[0].roleid == 1){
+    const res = await pool.query(`SELECT role_id FROM users WHERE id = $1`,[uID]);
+    if(res.rows[0].role_id == 1){
         return true;
     } 
     return false;
@@ -19,8 +19,8 @@ export async function checkAdmin(uID){
  * @param uID is the user who is currently logged in
  */
 export async function checkFinance(uID){
-    const res = await pool.query(`SELECT roleid FROM users WHERE id = $1`,[uID]);
-    if(res.rows[0].roleid == 2){
+    const res = await pool.query(`SELECT role_id FROM users WHERE id = $1`,[uID]);
+    if(res.rows[0].role_id == 2){
         return true;
     } 
     return false;

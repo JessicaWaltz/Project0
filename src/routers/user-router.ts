@@ -80,8 +80,8 @@ userRouter.patch('',
         else{
             const checkPer:Boolean = await permissionService.checkAdmin(uID);
             if(checkPer){
+                //only if all fields filled
                 const user: User = await userService.patchUsers(request.body);
-                console.log(user);
                 if(user.userId){
                     response.status(200).json(user);
                 }
