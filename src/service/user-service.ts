@@ -57,13 +57,6 @@ export async function patchUsers(request):Promise<User>{
     try{
         const result = await pool.query(`SELECT * FROM users where id = $1`,[request.id]);
         const user:User = new User(result.rows[0]);
-        /*user.email = request.email || user.email;
-        user.lastName = request.last_name || user.lastName;
-        user.firstName = request.first_name || user.firstName;
-        user.password = request.password || user.password;
-        user.role = request.role_id || user.role;
-        user.username = request.username || user.username;*/
-        console.log(user);
         //if they didnt give a column to change then it will "change" it to what it already is
         const result2 = await pool.query(`UPDATE users 
         SET username = $1, password = $2, first_name = $3, last_name = $4, email = $5, role_id = $6
