@@ -72,6 +72,7 @@ reimbursementsRouter.post('',
     async (request:any, response:Response)=>{
         //get the id number of the user if logged in otherwise it is undefined
         const uID = request.session.uid;
+        console.log("The user ID is "+uID);
         //check make sure they are logged in
         if(!uID){
             response.status(401).json({message: "You are not logged in"});

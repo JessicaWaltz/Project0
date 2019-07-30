@@ -14,7 +14,7 @@ export default class Reimbursement{
         }
         this.reimbursementId = obj.id;
         this.author = obj.author;
-        this.amount = obj.ammount;
+        this.amount = obj.amount;
         this.dateSubmitted = obj.date_submitted;
         this.dateResolved = obj.date_resolved;
         this.description = obj.description;

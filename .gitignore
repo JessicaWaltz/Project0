@@ -62,3 +62,5 @@ typings/
 
 #ignore database config
 secret.ts
+
+reactEx/

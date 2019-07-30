@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reimbursement System</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+</head>
+<body>
+    <ul class = "Navbar">
+        <li><a href=""><img class = "logo" src="./img/revlogo.png" alt="logo"></a></li>
+        <li><a href="#Post">Post</a></li>
+        <li><a href="#Get">Get</a></li>
+        <li><a href="#Patch">Patch</a></li>
+        <li><a href="#Login">Login</a></li>
+    </ul>
+
+
+
+
+    <div class = "Login" id="Login">
+        <div class = "title">Login To Your Account</div>
+
+        <form class="Login-form">
+            Username: <input type="text" id ="login-username">
+            Password: <input type="password" id="login-password">
+            <button type="button"id="login-btn">login</button>
+        </form>
+        <br>
+        <p id = "login-result"></p>
+    </div><!--End Login-->
+
+
+
+
+
+
+    <div class = "Post" id = "Post">
+        <div class = "title">Post Reimbursements</div>
+
+        <form class="Post-form" >
+            Amount: $<input id ="post-amount" type="number" min="1.00" step="1.00" max="2500" value= "0.00"  /><br>
+            Description: <br><textarea id="post-description" maxlength="255" rows="4" cols="50"></textarea><br>
+            type: <select id="post-type">
+                    <option value="1">Lodging</option>
+                    <option value="2">Travel</option>
+                    <option value="3">Food</option>
+                    <option value="4">Other</option>
+                  </select>
+            <button type="button" id="post-btn">Submit</button>
+        </form>
+        <br>
+        <p id = "post-result"></p>
+
+    </div><!--End Class Post-->
+
+
+
+    
+
+
+    <div class = "Get" id = "Get">
+        <div class = "title">Get User/Reimbursement</div>
+
+        <div>All Users: <button type="button"id="users-btn">search</button></div>
+
+
+        <form class="get-user-by-id-form"> By User ID: <input id="get-by-id" type="number" min="1" step="1" value= "1"  />
+                                              <button type="button" id="users-id-btn">Search</button>
+        </form>
+
+
+        <form class="Get-reimbursement-by-status-form">
+            Reimbursement By Status: 
+            <select id="get-status">
+                <option value="1">Pending</option>
+                <option value="2">Approved</option>
+                <option value="3">Denied</option>
+            </select>
+            <button type="button" id="reimbursement-status-btn">Search</button>
+        </form>
+
+
+        <form class="get-reimbursement-by-author-form">
+            Reimbursement By Author ID: <input id="author-id"type="number" min="1" step="1" value= "1"  />
+                                        <button type="button" id="author-id-btn">Submit</button>
+        </form>
+
+
+        <p id = "get-result"><p>
+    </div><!--End Class Get-->
+
+
+
+
+
+
+
+
+
+    <div class = "Patch" id = "Patch">
+            <div class = "title">Patch User/Reimbursement</div>
+
+            <div><h3>User</h3> 
+                <ul>
+                    <li>User ID: <input type="number" min="1" step="1" value= "1"  /></li>
+                    <li><input id="check-username" type ="checkbox">Username: <input id="patch-username" type="text"></li>
+                    <li><input id="check-password" type ="checkbox">Password: <input id="patch-password" type="password"></li>
+                    <li><input id="check-first-name" type ="checkbox">First Name: <input id="patch-first-name" type="text"></li>
+                    <li><input id="check-last-name" type ="checkbox">Last Name: <input id="patch-last-name" type="text"></li>
+                    <li><input id="check-email" type ="checkbox">Email: <input id="patch-email" type="email"></li>
+                    <li><input id="check-role" type ="checkbox">role: <select id="patch-role" name="role">
+                                                        <option value="1">Default</option>
+                                                        <option value="2">Finance</option>
+                                                        <option value="3">Admin</option>
+                                                      </select></li>
+
+                </ul>
+                <button type="button"name="patch-user-btn">Submit</button>
+            </div>
+            <div><h3>Reimbursement</h3>
+                <div>Reimbursement ID: <input type="number" min="1" step="1" value= "1"  /></div>
+                <div>Status: <select name="Status">
+                                <option value="1">Pending</option>
+                                <option value="2">Approved</option>
+                                <option value="3">Denied</option>
+                             </select>
+                </div>
+                <button type="button"name="patch-reimbursement-btn">Submit</button>
+            </div>
+    </div>
+    <script src="./js/login.js"></script>
+    <script src="./js/get.js"></script>
+    <script src="./js/post.js"></script>
+    <script src="./js/patch.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+        crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+        crossorigin="anonymous">
+    </script>
+</body>
+</html>
